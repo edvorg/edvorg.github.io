@@ -1,0 +1,27 @@
+#! /bin/bash
+
+set -e
+
+if [ -f "../local" ] ; then
+    source "../local"
+fi
+
+echo running edvorg-elastic
+
+docker run -d --network edvorg --hostname edvorg-elastic --name edvorg-elastic \
+       -v ${EDVORG_DIR}/elastic/:/usr/share/elasticsearch/data/ \
+       -p 9200:9200 \
+       -p 9300:9300 \
+       edvorg-elastic
+
+while ! nc -z localhost 9200 ; do
+    echo waiting for elastic to open port 9200
+    sleep 5s
+done
+
+while ! nc -z localhost 9300 ; do
+    echo waiting for elastic to open port 9300
+    sleep 5s
+done
+
+echo elastic is ready

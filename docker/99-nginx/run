@@ -1,0 +1,25 @@
+#! /bin/bash
+
+set -e
+
+if [ -f "../local" ] ; then
+    source "../local"
+fi
+
+if [[ "${START_EDVORG_SERVER}" == "no" ]] ; then
+    echo skipping edvorg-nginx
+    exit 0
+fi
+
+echo running edvorg-nginx
+
+docker run -d --network edvorg --hostname edvorg-nginx --name edvorg-nginx \
+     -p 80:80 \
+     edvorg-nginx
+
+while ! nc -z localhost 80 ; do
+    echo waiting for nginx to open port 80
+    sleep 5s
+done
+
+echo nginx is ready

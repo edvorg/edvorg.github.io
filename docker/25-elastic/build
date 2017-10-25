@@ -1,0 +1,38 @@
+#! /bin/bash
+
+set -e
+
+if [ -f "../local" ] ; then
+    source "../local"
+fi
+
+NOCACHE=
+MODE=offline
+
+# parse arguments
+
+while [[ $# -ge 1 ]]
+do
+    key="$1"
+
+    case $key in
+        -m|--mode)
+            MODE=$2
+            shift # past argument
+            ;;
+
+        -n|--no-cache)
+            NOCACHE="--no-cache"
+            shift # past argument
+            ;;
+
+        *)
+            # unknown option
+            shift # past argument or value
+            ;;
+    esac
+done
+
+echo building edvorg-elastic
+
+docker build $NOCACHE -t edvorg-elastic .

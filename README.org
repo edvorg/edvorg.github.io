@@ -1,0 +1,7 @@
+* Edvorg
+
+** Description
+
+   *Edvorg* is a simple dictionary web-app
+
+   Current version can be found [[http://edvorg.clj.rocks][edvorg.clj.rocks]]

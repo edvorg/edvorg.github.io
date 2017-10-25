@@ -1,0 +1,25 @@
+#! /bin/bash
+
+set -e
+
+if [ -f "../local" ] ; then
+    source "../local"
+fi
+
+if [[ "${START_EDVORG_SERVER}" == "no" ]] ; then
+    echo skipping edvorg-server
+    exit 0
+fi
+
+echo running edvorg-server
+
+docker run -d --network edvorg --hostname edvorg-server --name edvorg-server \
+     -p 12309:12309 \
+     edvorg-server
+
+while ! nc -z localhost 12309 ; do
+    echo waiting for edvorg to open port 12309
+    sleep 5s
+done
+
+echo edvorg-server is ready

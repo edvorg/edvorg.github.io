@@ -1,0 +1,8 @@
+{:mode :uberjar
+ :client-config-keys [[:mode]]
+ :port "12309"
+ :redis {:host "edvorg-redis"
+         :port 6379}
+ :elastic-hosts [["edvorg-elastic" 9300]]
+ :user-token-key "edvorg_token"
+ :terms-per-query 10}

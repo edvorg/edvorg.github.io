@@ -1,0 +1,4 @@
+#! /bin/bash
+
+docker stop edvorg-redis
+docker rm edvorg-redis

@@ -1,0 +1,44 @@
+#! /bin/bash
+
+echo "================================================================================================"
+echo "== BUILDING ================================================================================"
+
+DIR=`dirname ${0}`
+LOCAL="${DIR}/local"
+LOCAL_EXAMPLE="${DIR}/local.example"
+
+if [ ! -f "${LOCAL}" ] ; then
+    cp ${LOCAL_EXAMPLE} ${LOCAL}
+fi
+
+if [ -f "${LOCAL}" ] ; then
+    source "${LOCAL}"
+fi
+
+if [ ! -f ./lein ] ; then
+    curl -O https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+    chmod +x ./lein
+fi
+
+export PATH=`realpath ${DIR}`:${PATH}
+
+DIRS=`ls`
+
+for entry in ${DIRS} ; do
+    if [ -d ${entry} ] ; then
+        echo "------------------------------------------------------------------------------------------------"
+        echo entering ${entry}
+        pushd ${entry}
+        if [ ! -f ./build ] ; then
+            echo nothing to build
+        else
+            ./build "$@"
+            CODE=$?
+            if [ "${CODE}" != "0" ] ; then
+                echo failed. exiting with ${CODE}
+                exit ${CODE}
+            fi
+        fi
+        popd
+    fi
+done

@@ -1,0 +1,4 @@
+#! /bin/bash
+
+docker stop edvorg-nginx
+docker rm edvorg-nginx

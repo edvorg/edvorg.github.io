@@ -1,0 +1,21 @@
+#! /bin/bash
+
+set -e
+
+if [ -f "../local" ] ; then
+    source "../local"
+fi
+
+echo running edvorg-redis
+
+docker run -d --network edvorg --hostname edvorg-redis --name edvorg-redis \
+     -v ${EDVORG_DIR}/redis/:/data/ \
+     -p 6379:6379 \
+     edvorg-redis
+
+while ! nc -z localhost 6379 ; do
+    echo waiting for redis to open port 6379
+    sleep 5s
+done
+
+echo redis is ready

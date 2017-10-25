@@ -1,0 +1,18 @@
+#! /bin/bash
+
+# optionally save this file as ./local and edit to your preference
+
+DIR=`dirname ${BASH_SOURCE[0]}`
+DIR=`realpath ${DIR}`
+
+export EDVORG_DIR=`realpath /var/edvorg`
+
+export DOCKER_USER=docker
+
+export USE_BUILDER=yes
+
+export EDVORG_REPO_PATH=`realpath ${DIR}/..`
+
+export START_EDVORG_SERVER=yes
+
+export EDVORG_SERVER_REPO=git@github.com:edvorg/edvorg.git

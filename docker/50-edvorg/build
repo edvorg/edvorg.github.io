@@ -1,0 +1,121 @@
+#! /bin/bash
+
+set -e
+
+if [ -f "../local" ] ; then
+    source "../local"
+fi
+
+NOCACHE=
+MODE=offline
+REBUILD=
+LOCAL=
+PULL=
+BRANCH=master
+
+# parse arguments
+
+while [[ $# -ge 1 ]]
+do
+    key="$1"
+
+    case $key in
+        -rsb|--edvorg-server-branch)
+            BRANCH=$2
+            shift # past argument
+            ;;
+
+        -rrs|--rebuild-edvorg-server)
+            REBUILD="rebuild"
+            shift # past argument
+            ;;
+
+        -r|--rebuild)
+            REBUILD="rebuild"
+            shift # past argument
+            ;;
+
+        -lrs|--local-edvorg-server)
+            LOCAL="local"
+            shift # past argument
+            ;;
+
+        -l|--local)
+            LOCAL="local"
+            shift # past argument
+            ;;
+
+        -m|--mode)
+            MODE=$2
+            shift # past argument
+            ;;
+
+        -p|--pull)
+            PULL="pull"
+            shift # past argument
+            ;;
+
+        -n|--no-cache)
+            NOCACHE="--no-cache"
+            shift # past argument
+            ;;
+
+        *)
+            # unknown option
+            shift # past argument or value
+            ;;
+    esac
+done
+
+if [[ "${START_EDVORG_SERVER}" == "no" ]] ; then
+    echo skipping edvorg-server
+    exit 0
+fi
+
+echo building edvorg-server
+
+if [[ "${LOCAL}" == "local" ]] ; then
+    echo using local edvorg repo ${EDVORG_REPO_PATH}
+    EDVORG_PATH=${EDVORG_REPO_PATH}
+else
+    EDVORG_PATH=../.repos/edvorg
+fi
+
+if [[ "${PULL}" == "pull" ]] ; then
+    echo pulling
+    pushd ${EDVORG_PATH}
+    git pull
+    git submodule update --init --recursive
+    popd
+fi
+
+function rebuild() {
+    echo compiling
+    if [[ "${USE_BUILDER}" == "yes" ]] ; then
+        pushd ../00-builder/
+        ./exec `realpath ${EDVORG_PATH}` "/in" "lein do clean, uberjar"
+        popd
+    else
+        pushd ${EDVORG_PATH}
+        lein do clean, uberjar
+        popd
+    fi
+}
+
+if [ ! "${LOCAL}" == "local" ] ; then
+    if [ ! -d ${EDVORG_PATH} ] || [ "$MODE" == "online" ] ; then
+        echo cloning branch ${BRANCH}
+        rm -rf ${EDVORG_PATH}
+        git clone --recursive -b ${BRANCH} --depth 1 ${EDVORG_SERVER_REPO} ${EDVORG_PATH}
+    fi
+fi
+
+if [ ! -f ${EDVORG_PATH}/target/edvorg.jar ] || [ "$REBUILD" == "rebuild" ] ; then
+    rebuild
+fi
+
+rm -rf edvorg.jar
+cp -rf ${EDVORG_PATH}/target/edvorg.jar ./edvorg.jar
+
+echo building
+docker build $NOCACHE -t edvorg-server .
