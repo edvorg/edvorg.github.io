@@ -1,7 +1,7 @@
 (ns edvorg.handler
   (:require [compojure.core :refer [defroutes GET]]
             [compojure.route :refer [not-found resources]]
-            [edvorg.config :as config]
+            [rocks.clj.configuron.core :refer [env config-handler]]
             [edvorg.middleware
              :refer
              [dev-middleware prod-middleware web-socket-middleware]]
@@ -22,7 +22,7 @@
                           (timbre/debug ":visitor-id" visitor-id
                                         "processing message"
                                         ":msg" msg)))]
-    (if (= (get-in @config/env [:figwheel :server-port]) server-port)
+    (if (= (get-in env [:figwheel :server-port]) server-port)
       (httpkit/with-channel req channel {:format :str}
         ;; (clients/register visitor-id {:channel channel
         ;;                               :respond! #(httpkit/send! channel %)})
@@ -54,6 +54,8 @@
            (response/content-type "text/html")))
 
   (GET "/ws" [] (web-socket-middleware #'web-socket-handler))
+
+  (GET "/environ" [] #'config-handler)
 
   (resources "/")
 

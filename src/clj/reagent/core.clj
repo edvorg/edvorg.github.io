@@ -1,5 +1,5 @@
 (ns reagent.core
-  (:require [edvorg.config :as config]
+  (:require [rocks.clj.configuron.core :refer [env get-client-config]]
             [edvorg.transit :as transit]
             [hiccup.page :refer [include-js include-css html5]])
   (:refer-clojure :exclude [atom]))
@@ -53,7 +53,7 @@
   []
   [:head
    [:meta {:charset "utf-8"}]
-   (include-css (case (:mode @config/env)
+   (include-css (case (:mode env)
                   :dev "/css/site.css"
                   :uberjar "/css/site.min.css"))])
 
@@ -63,12 +63,7 @@
   (html5
    (head)
    [:body {:class "body-container"}
-    [:div#config {:transit (let [client-config (->> (:client-config-keys @config/env)
-                                                    (reduce (fn [client-config path]
-                                                              (->> (get-in @config/env path)
-                                                                   (assoc-in client-config path)))
-                                                            {}))]
-                             (transit/to-transit client-config))}]
+    [:div#config {:transit (get-client-config)}]
     [:div#state {:transit (transit/to-transit @state)}]
     [:div#app
      (render true page)]

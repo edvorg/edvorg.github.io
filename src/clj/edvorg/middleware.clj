@@ -3,15 +3,15 @@
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.permacookie :refer [wrap-permacookie]]
-            [edvorg.config :as config]))
+            [rocks.clj.configuron.core :refer [env]]))
 
 (defn visitor-id [_]
-  (if (= :dev (:mode @config/env))
+  (if (= :dev (:mode env))
     "dev"
     (str (java.util.UUID/randomUUID))))
 
 (defn wrap-user-token [handler]
-  (wrap-permacookie handler {:name (:user-token-key @config/env)
+  (wrap-permacookie handler {:name (:user-token-key env)
                              :idfn visitor-id}))
 
 (defn web-socket-middleware [handler]

@@ -9,10 +9,8 @@
             [edvorg.view.index]
             [edvorg.view.editor]
             [edvorg.state :as state]
-            [edvorg.util :as util]
             [edvorg.transit :as transit]
-            [edvorg.commands :as commands]
-            [edvorg.config :as config])
+            [rocks.clj.configuron.core :refer [env fetcher]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 ;; -------------------------
@@ -46,20 +44,19 @@
 (defonce init? (atom false))
 
 (defn init! []
-  ;; decode application environment config from html
-  (->> (get-encoded-data "config")
-       (reset! config/env))
-  ;; decode application state from html
-  (->> (get-encoded-data "state")
-       (reset! state/state))
-  (case (:mode @config/env)
-    :uberjar (set! *print-fn* (fn [& _]))
-    :dev (enable-console-print!))
-  (accountant/configure-navigation! {:nav-handler secretary/dispatch!
-                                     :path-exists? secretary/locate-route})
-  (accountant/dispatch-current!)
-  (mount-root))
+  (go
+    (let [env (or (<! fetcher) env)]
+      ;; decode application state from html
+      (->> (get-encoded-data "state")
+           (reset! state/state))
+      (case (:mode env)
+        :uberjar (set! *print-fn* (fn [& _]))
+        :dev (enable-console-print!))
+      (accountant/configure-navigation! {:nav-handler secretary/dispatch!
+                                         :path-exists? secretary/locate-route})
+      (accountant/dispatch-current!)
+      (mount-root))))
 
 (when-not @init?
-  (init!)
-  (reset! init? true))
+  (reset! init? true)
+  (init!))

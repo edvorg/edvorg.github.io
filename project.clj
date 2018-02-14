@@ -32,7 +32,7 @@
                  [org.immutant/immutant "2.1.9"];; http server
                  [compojure "1.6.0"] ;; server side routing
                  [hiccup "1.0.5"] ;; server side rendering
-                 [yogthos/config "0.9"] ;; configuration
+                 [rocks.clj/configuron "0.1.0-SNAPSHOT"] ;; configuration
                  [jarohen/chord "0.8.1"
                   :exclusions [http-kit]] ;; web sockets support
                  [secretary "1.2.3"] ;; client side routing

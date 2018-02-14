@@ -1,10 +1,10 @@
 (ns edvorg.figwheel
   (:require [figwheel-sidecar.repl-api :as ra]
-            [edvorg.config :as config]
+            [rocks.clj.configuron.core :refer [env]]
             [mount.core :as mount]))
 
 (mount/defstate  ^{:on-reload :noop} figwheel
-  :start (if (= :dev (:mode @config/env))
+  :start (if (= :dev (:mode env))
            (do
              (ra/start-figwheel!)
              {:active true})

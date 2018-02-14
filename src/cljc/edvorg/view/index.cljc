@@ -13,7 +13,3 @@
        [:div.tile {:class (name tile)
                    :style {:left (str (* 16 j) "px")
                            :top (str (* 16 i) "px")}}]))])
-
-(comment
-  #?(:cljs (reset! edvorg.state/state edvorg.defaults/state))
-  )
