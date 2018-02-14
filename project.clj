@@ -39,6 +39,7 @@
                  [clj-http "3.7.0"] ;; server side http client
                  [cljs-http "0.1.43"] ;; client side http client
                  [cheshire "5.8.0"] ;; json support
+                 [rocks.clj/transit "0.1.0-SNAPSHOT"] ;; transit support
                  [com.cognitect/transit-clj "0.8.300"] ;; serialization on server
                  [com.cognitect/transit-cljs "0.8.243"] ;; serialization on client
                  [clojure-csv/clojure-csv "2.0.2"] ;; csv support
@@ -126,22 +127,14 @@
                    :env {:mode :dev
                          :client-config-keys [[:mode]]
                          :port 12309
-                         :redis {:host "127.0.0.1"
-                                 :port 6379}
-                         :elastic-hosts [["localhost" 9300]]
-                         :user-token-key "edvorg_token"
-                         :terms-per-query 10}}
+                         :user-token-key "edvorg_token"}}
 
              :uberjar {:hooks [minify-assets.plugin/hooks]
                        :prep-tasks ["compile" ["cljsbuild" "once" "min"]]
                        :env {:mode :uberjar
                              :client-config-keys [[:mode]]
                              :port 12309
-                             :redis {:host "127.0.0.1"
-                                     :port 6379}
-                             :elastic-hosts [["localhost" 9300]]
-                             :user-token-key "edvorg_token"
-                             :terms-per-query 10}
+                             :user-token-key "edvorg_token"}
                        :aot :all
                        :omit-source true}}
   :jvm-opts ["-Xms256M"

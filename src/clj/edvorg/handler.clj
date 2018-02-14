@@ -5,7 +5,7 @@
             [edvorg.middleware
              :refer
              [dev-middleware prod-middleware web-socket-middleware]]
-            [edvorg.transit :as transit]
+            [rocks.clj.transit.core :as transit]
             edvorg.view.index
             edvorg.view.editor
             [immutant.web.async :as async]

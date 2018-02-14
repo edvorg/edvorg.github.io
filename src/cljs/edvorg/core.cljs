@@ -9,7 +9,7 @@
             [edvorg.view.index]
             [edvorg.view.editor]
             [edvorg.state :as state]
-            [edvorg.transit :as transit]
+            [rocks.clj.transit.core :as transit]
             [rocks.clj.configuron.core :refer [env fetcher]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 

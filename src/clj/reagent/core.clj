@@ -1,6 +1,6 @@
 (ns reagent.core
   (:require [rocks.clj.configuron.core :refer [env get-client-config]]
-            [edvorg.transit :as transit]
+            [rocks.clj.transit.core :as transit]
             [hiccup.page :refer [include-js include-css html5]])
   (:refer-clojure :exclude [atom]))
 
