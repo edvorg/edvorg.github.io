@@ -17,6 +17,9 @@
   :dependencies [[org.clojure/clojure "1.8.0"] ;; server side language
                  [org.clojure/clojurescript "1.9.908" :scope "provided"] ; client side language
                  [clojure-future-spec "1.9.0-alpha14"] ;; spec
+                 [rocks.clj/configuron "0.1.0-SNAPSHOT"] ;; configuration
+                 [rocks.clj/lenses "0.1.0-SNAPSHOT"] ;; lenses
+                 [rocks.clj/transit "0.1.0-SNAPSHOT"] ;; transit support
                  [com.taoensso/timbre "4.10.0"] ;; logging
                  [org.clojure/core.async "0.3.443"] ;; concurrency/message processing
                  [mount "0.1.11"] ;; state handling
@@ -32,16 +35,12 @@
                  [org.immutant/immutant "2.1.9"];; http server
                  [compojure "1.6.0"] ;; server side routing
                  [hiccup "1.0.5"] ;; server side rendering
-                 [rocks.clj/configuron "0.1.0-SNAPSHOT"] ;; configuration
                  [jarohen/chord "0.8.1"
                   :exclusions [http-kit]] ;; web sockets support
                  [secretary "1.2.3"] ;; client side routing
                  [clj-http "3.7.0"] ;; server side http client
                  [cljs-http "0.1.43"] ;; client side http client
                  [cheshire "5.8.0"] ;; json support
-                 [rocks.clj/transit "0.1.0-SNAPSHOT"] ;; transit support
-                 [com.cognitect/transit-clj "0.8.300"] ;; serialization on server
-                 [com.cognitect/transit-cljs "0.8.243"] ;; serialization on client
                  [clojure-csv/clojure-csv "2.0.2"] ;; csv support
                  [com.cemerick/url "0.1.1"] ;; url encoding support
                  [venantius/accountant "0.2.0"
@@ -125,16 +124,19 @@
                               :exclusions [org.clojure/clojure]]]
 
                    :env {:mode :dev
-                         :client-config-keys [[:mode]]
+                         :client-config-keys [[:mode]
+                                              [:window-size]
+                                              [:tile-asset-size]
+                                              [:tile-ui-size]]
                          :port 12309
-                         :user-token-key "edvorg_token"}}
+                         :user-token-key "edvorg_token"
+                         :window-size [800 800]
+                         :tile-asset-size [16 16]
+                         :tile-ui-size [32 32]}}
 
              :uberjar {:hooks [minify-assets.plugin/hooks]
                        :prep-tasks ["compile" ["cljsbuild" "once" "min"]]
-                       :env {:mode :uberjar
-                             :client-config-keys [[:mode]]
-                             :port 12309
-                             :user-token-key "edvorg_token"}
+                       :env {:mode :uberjar}
                        :aot :all
                        :omit-source true}}
   :jvm-opts ["-Xms256M"

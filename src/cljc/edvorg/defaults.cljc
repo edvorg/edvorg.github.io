@@ -1,44 +1,617 @@
-(ns edvorg.defaults)
-
-(def ground-tiles
-  ["////*/////////////*/////////////////////"
-   "////*/////////////*/////////////////////"
-   "////*/////////////*/////////////////////"
-   "////*///###*###///*/////###*////////////"
-   "////************************////////////"
-   "///////////////////////////*////////////"
-   "///////////////////////////*////////////"
-   "///////////////////////////*//###*##////"
-   "///////////////////////////*************"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "/////////////////////////////////////*//"
-   "//////////###*###////////////////////*//"
-   "//////********************************//"
-   "////////////////////////////////////////"
-   "////////////////////////////////////////"
-   "////////////////////////////////////////"
-   "////////////////////////////////////////"])
-
-(def ground-tiles-kw (for [row ground-tiles]
-                       (for [c row]
-                         (case (str c)
-                           "#" :grass-tile
-                           "/" :grass-tile-2
-                           "*" :grass-tile-3))))
+(ns edvorg.defaults
+  (:require [taoensso.timbre :as timbre]))
 
 (def state
-  "The initial state of the web application."
-  {:ground-tiles ground-tiles-kw})
+ "The initial state of the web application."
+  {:editor {:active-tool :draw
+            :active-tile "/img/tiles/fences/left.png"}
+   :tiles  {0
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             5  #{"/img/tiles/grass/tile-1.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/grass/tile-1.png"},
+             8  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"
+               "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            1
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             5  #{"/img/tiles/grass/tile-1.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/grass/tile-1.png" "/img/tiles/objects/barrel.png"},
+             8  #{"/img/tiles/grass/tile-1.png" "/img/tiles/objects/barrel.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             12 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"
+               "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png" "/img/tiles/rock/big.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            2
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png" "/img/tiles/house/main.png"},
+             9  #{"/img/tiles/objects/flowers.png" "/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/tree/left.png" "/img/tiles/grass/tile-1.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            3
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/objects/flowers.png" "/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/tree/left.png" "/img/tiles/grass/tile-1.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png" "/img/tiles/objects/chest.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            4
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/left-end.png"},
+             12 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/center.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            5
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right.png"},
+             12 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/right-end.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png" "/img/tiles/rock/small.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            6
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/objects/flowers.png" "/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right.png"},
+             12 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"
+               "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            7
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/objects/flowers.png" "/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"
+               "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            8
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             5  #{"/img/tiles/house/extension.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/cliff/left-end.png" "/img/tiles/grass/tile-1.png"},
+             17 #{},
+             18 #{},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            9
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png" "/img/tiles/objects/chest.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/river/horizontal.png"},
+             14 #{"/img/tiles/grass/tile-1.png" "/img/tiles/rock/big.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/cliff/left.png" "/img/tiles/grass/tile-1.png"},
+             17 #{},
+             18 #{},
+             19 #{"/img/tiles/lake/left-top.png" "/img/tiles/grass/tile-1.png"},
+             20
+             #{"/img/tiles/lake/left-bottom.png" "/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/left-end.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            10
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/house/shadow.png"},
+             8
+             #{"/img/tiles/house/shadow-corner.png"
+               "/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/river/left-bottom.png"},
+             14 #{"/img/tiles/grass/tile-1.png" "/img/tiles/river/vertical.png"},
+             15 #{"/img/tiles/grass/tile-1.png" "/img/tiles/river/vertical.png"},
+             16 #{"/img/tiles/waterfall/top.png" "/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/waterfall/center.png"},
+             18 #{"/img/tiles/waterfall/bottom.png"},
+             19 #{"/img/tiles/lake/top.png"},
+             20 #{"/img/tiles/lake/bottom.png" "/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23
+             #{"/img/tiles/road/horizontal-damaged-2.png"
+               "/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            11
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png" "/img/tiles/house/secondary.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/cliff/right.png" "/img/tiles/grass/tile-1.png"},
+             17 #{},
+             18 #{},
+             19 #{"/img/tiles/lake/right-top.png" "/img/tiles/grass/tile-1.png"},
+             20
+             #{"/img/tiles/lake/right-bottom.png" "/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23
+             #{"/img/tiles/road/horizontal-damaged-2.png"
+               "/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            12
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/cliff/right-end.png"},
+             16 #{},
+             17 #{},
+             18 #{},
+             19 #{"/img/tiles/grass/tile-1.png" "/img/tiles/objects/flowers.png"},
+             20 #{"/img/tiles/grass/tile-1.png" "/img/tiles/objects/flowers.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23
+             #{"/img/tiles/grass/tile-1.png"
+               "/img/tiles/road/horizontal-damaged-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            13
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23
+             #{"/img/tiles/grass/tile-1.png"
+               "/img/tiles/road/horizontal-damaged-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            14
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             5  #{"/img/tiles/grass/tile-1.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             8  #{"/img/tiles/grass/tile-1.png" "/img/tiles/house/shadow.png"},
+             9  #{"/img/tiles/grass/tile-1.png" "/img/tiles/house/shadow.png"},
+             10
+             #{"/img/tiles/house/shadow-corner.png"
+               "/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/road/crossing.png" "/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             13 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             14 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             15 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             16 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             17 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             18 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             19 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             20 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             21 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             22 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"},
+             23 #{"/img/tiles/road/crossing.png" "/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom.png"}},
+            15
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/top-left.png"},
+             3  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/left.png"},
+             4  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/left.png"},
+             5  #{"/img/tiles/soil/bottom-left.png" "/img/tiles/grass/tile-1.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             8  #{"/img/tiles/grass/tile-1.png" "/img/tiles/house/shadow.png"},
+             9
+             #{"/img/tiles/house/shadow-corner.png"
+               "/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/left.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/left.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            16
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/top.png"},
+             3  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/pumpkin.png"},
+             4  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/pumpkin.png"},
+             5  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/bottom.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             8  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/left.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png" "/img/tiles/house/main.png"},
+             21 #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/left.png"},
+             22
+             #{"/img/tiles/fences/bottom-left.png" "/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/left.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            17
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/top.png"},
+             3  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/pumpkin.png"},
+             4  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/pumpkin.png"},
+             5  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/bottom.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/top-end.png"},
+             8  #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/top.png"},
+             9  #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/top.png"},
+             10 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/top.png"},
+             11 #{"/img/tiles/road/crossing.png" "/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/bottom-end.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/objects/flowers.png" "/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/left.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            18
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/top.png"},
+             3  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/pumpkin.png"},
+             4  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/pumpkin.png"},
+             5  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/bottom.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             8  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right-end.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/left.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            19
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/top-right.png"},
+             3  #{"/img/tiles/soil/right.png" "/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/soil/right.png" "/img/tiles/grass/tile-1.png"},
+             5
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/soil/bottom-right.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             8  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png" "/img/tiles/road/right-end.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            20
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             5  #{"/img/tiles/grass/tile-1.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7
+             #{"/img/tiles/grass/tile-1.png"
+               "/img/tiles/fences/bottom-right.png"},
+             8  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png" "/img/tiles/objects/barrel.png"},
+             22 #{"/img/tiles/fences/bottom.png" "/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            21
+            {0  #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/left.png"},
+             1  #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/left.png"},
+             2  #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/left.png"},
+             3  #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/left.png"},
+             4  #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/left.png"},
+             5  #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/left.png"},
+             6  #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/left.png"},
+             7  #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/left.png"},
+             8  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/right.png"},
+             22
+             #{"/img/tiles/grass/tile-1.png"
+               "/img/tiles/fences/bottom-right.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            22
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             5  #{"/img/tiles/grass/tile-1.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/grass/tile-1.png"},
+             8  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png" "/img/tiles/house/shadow.png"},
+             20
+             #{"/img/tiles/house/shadow-corner.png"
+               "/img/tiles/grass/tile-1.png"},
+             21
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/right-decor.png"},
+             22
+             #{"/img/tiles/grass/tile-1.png" "/img/tiles/fences/right-decor.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            23
+            {0  #{"/img/tiles/grass/tile-1.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png"},
+             5  #{"/img/tiles/grass/tile-1.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             8  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png"},
+             11 #{"/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}},
+            24
+            {0  #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             1  #{"/img/tiles/grass/tile-1.png"},
+             2  #{"/img/tiles/grass/tile-1.png"},
+             3  #{"/img/tiles/grass/tile-1.png"},
+             4  #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             5  #{"/img/tiles/grass/tile-1.png"},
+             6  #{"/img/tiles/grass/tile-1.png"},
+             7  #{"/img/tiles/grass/tile-1.png"},
+             8  #{"/img/tiles/grass/tile-1.png"},
+             9  #{"/img/tiles/grass/tile-1.png"},
+             10 #{"/img/tiles/grass/tile-1.png" "/img/tiles/tree/single.png"},
+             11 #{"/img/tiles/grass/tile-1.png"},
+             12 #{"/img/tiles/grass/tile-1.png"},
+             13 #{"/img/tiles/grass/tile-1.png"},
+             14 #{"/img/tiles/grass/tile-1.png"},
+             15 #{"/img/tiles/grass/tile-1.png"},
+             16 #{"/img/tiles/grass/tile-1.png"},
+             17 #{"/img/tiles/grass/tile-1.png"},
+             18 #{"/img/tiles/grass/tile-1.png"},
+             19 #{"/img/tiles/grass/tile-1.png"},
+             20 #{"/img/tiles/grass/tile-1.png"},
+             21 #{"/img/tiles/grass/tile-1.png"},
+             22 #{"/img/tiles/grass/tile-1.png"},
+             23 #{"/img/tiles/grass/tile-1.png"},
+             24 #{"/img/tiles/grass/tile-1.png"}}}})
+
+(comment
+  (->> (for [[x col] (:tiles state)
+             [y {:keys [layers]}] col
+             [_ url] layers]
+         [x y url])
+       (reduce (fn [m [x y url]]
+                 (-> m
+                     (update-in [x y]
+                                (fn [urls]
+                                  (conj (set urls) url)))))
+               {})
+       (clojure.walk/postwalk (fn [x]
+                                (if (map? x)
+                                  (clojure.lang.PersistentTreeMap/create ^java.util.Map x)
+                                  x))))
+  )

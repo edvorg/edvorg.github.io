@@ -1,7 +1,8 @@
 (ns reagent.core
   (:require [rocks.clj.configuron.core :refer [env get-client-config]]
             [rocks.clj.transit.core :as transit]
-            [hiccup.page :refer [include-js include-css html5]])
+            [hiccup.page :refer [include-js include-css html5]]
+            [clojure.string :as s])
   (:refer-clojure :exclude [atom]))
 
 ;; these are utilities to support server side rendering with react/reagent
@@ -16,12 +17,34 @@
   [state path]
   (atom (get-in @state path)))
 
+(defn to-attribute-value [value]
+  (if-not (map? value)
+    value
+    (->> value
+         (map (fn [[k v]]
+                (let [v (cond
+                          (= :z-index k) v
+                          (integer? v)   (str v "px")
+                          (keyword? v)   (name v)
+                          :default       v)]
+                  (format "%s: %s;" (name k) v))))
+         (s/join " "))))
+
+(defn conform-attributes [m]
+  (->> m
+       (map (fn [[k v]]
+              [k (to-attribute-value v)]))
+       (into {})))
+
 (defn normalize
   "Makes sure all components have opts map as second element."
   [component]
   (if (map? (second component))
-    component
-    (into [(first component) {}] (rest component))))
+    (let [[f m & r] component
+          m (conform-attributes m)]
+      (into [f m] r))
+    (->> (rest component)
+         (into [(first component) {}]))))
 
 (defn render
   "Generates plain hiccup structure from reagent-style hiccup structure."
