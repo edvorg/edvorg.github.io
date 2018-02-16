@@ -19,13 +19,13 @@
   position: absolute;
   left: 0px;
   top: 0px;
-  background-color: #00000000;
+  opacity: 0;
   z-index: 1000;
   overflow: hidden;
 }
 
 .tile-placeholder:hover {
-  background-color: #ffffff22;
+  background-color: rgba(white, 1.0);
 }
 
 .tile-place-holder-preview {

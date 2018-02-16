@@ -19,3 +19,5 @@ pom.xml.asc
 /docker/rev
 .DS_Store
 /TAGS
+/.sass-cache/
+/resources/public/css/
