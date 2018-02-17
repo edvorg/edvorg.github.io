@@ -20,4 +20,5 @@ pom.xml.asc
 .DS_Store
 /TAGS
 /.sass-cache/
-/resources/public/css/
+/resources/public/css/*.css
+/resources/public/css/*.css.map

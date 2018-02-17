@@ -26,6 +26,7 @@
 
 .tile-placeholder:hover {
   background-color: rgba(white, 1.0);
+  opacity: 0.1;
 }
 
 .tile-place-holder-preview {
@@ -42,7 +43,6 @@
   left: 0px;
   top: 0px;
   background-size: 100%;
-
 }
 
 .npc {
