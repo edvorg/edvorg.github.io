@@ -61,7 +61,7 @@
             [lein-cljsbuild "1.1.7"]
             [lein-asset-minifier "0.4.3" :exclusions [org.clojure/clojure]]
             [lein-figwheel "0.5.14"]
-            [deraen/lein-sass4clj "0.3.1"]]
+            [rocks.clj/lein-give-me-my-css "0.1.0-SNAPSHOT"]]
 
   :ring {:handler edvorg.handler/dev-routes
          :init edvorg.core/-main
@@ -139,12 +139,6 @@
                        :env {:mode :uberjar}
                        :aot :all
                        :omit-source true}}
-
-  :sass {:target-path "resources"
-         :source-paths ["resources"]
-         :output :expanded
-         :verbosity 2
-         :source-map true}
 
   :jvm-opts ["-Xms256M"
              "-Xmx1024M"])
