@@ -1,0 +1,150 @@
+.body-container {
+  margin: 0px 0px 0px 0px;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+.playground {
+  background-repeat: no-repeat;
+  background-color: black;
+  position: relative;
+  left: 0px;
+  top: 0px;
+}
+
+.tile-placeholder {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  opacity: 0;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.tile-placeholder:hover {
+  background-color: rgba(white, 1.0);
+  opacity: 0.1;
+}
+
+.tile-place-holder-preview {
+  opacity: 0;
+  position: absolute;
+}
+
+.tile-place-holder-preview:hover {
+  opacity: 1;
+}
+
+.tile {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 100%;
+}
+
+.npc {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-size: 300%;
+}
+
+.npc-look-left {
+  background-position: 0% 0%;
+}
+
+.npc-look-right {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+  background-position: 0% 0%;
+}
+
+.npc-look-down {
+  background-position: 0% 200%;
+}
+
+.npc-look-up {
+  background-position: 0% 300%;
+}
+
+@keyframes npc-walk-left {
+   100% { background-position: 300% 0%; }
+}
+
+.npc-walk-left {
+  animation: npc-walk-left 0.5s steps(3) infinite;
+  background-position: 0% 0%;
+}
+
+@keyframes npc-walk-right {
+   100% { background-position: 300% 0%; }
+}
+
+.npc-walk-right {
+  animation: npc-walk-right 0.5s steps(3) infinite;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+  background-position: 0% 0%;
+}
+
+@keyframes npc-walk-down {
+  100% { background-position: 300% 200%; }
+}
+
+.npc-walk-down {
+  background-position: 0% 200%;
+  animation: npc-walk-down 0.5s steps(3) infinite;
+}
+
+@keyframes npc-walk-up {
+  100% { background-position: 300% 300%; }
+}
+
+.npc-walk-up {
+  background-position: 0% 300%;
+  animation: npc-walk-up 0.5s steps(3) infinite;
+}
+
+.editor-tile-pic {
+  padding: 2px 2px 2px 2px;
+  margin: 2px 2px 2px 2px;
+  display: inline-block;
+  background-color: black;
+}
+
+.editor-tile-pic:hover {
+  background-color: blue;
+}
+
+.editor-tile-pic-active {
+  background-color: red;
+}
+
+.editor-tile-pic-active:hover {
+  background-color: red;
+}
+
+.editor-tile-pic-inner {
+  position: relative;
+}
+
+.pixelated {
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
