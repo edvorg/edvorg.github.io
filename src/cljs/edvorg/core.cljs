@@ -10,7 +10,7 @@
             [edvorg.view.editor]
             [edvorg.state :as state]
             [rocks.clj.transit.core :as transit]
-            [rocks.clj.configuron.core :refer [env fetcher]])
+            [rocks.clj.configuron.core :refer [get-env]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 ;; -------------------------
@@ -45,7 +45,7 @@
 
 (defn init! []
   (go
-    (let [env (or (<! fetcher) env)]
+    (let [env (<! (get-env))]
       ;; decode application state from html
       (->> (get-encoded-data "state")
            (reset! state/state))

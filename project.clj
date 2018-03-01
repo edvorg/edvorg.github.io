@@ -17,7 +17,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"] ;; server side language
                  [org.clojure/clojurescript "1.9.908" :scope "provided"] ; client side language
                  [clojure-future-spec "1.9.0-alpha14"] ;; spec
-                 [rocks.clj/configuron "0.1.0-SNAPSHOT"] ;; configuration
+                 [rocks.clj/configuron "0.1.1-SNAPSHOT"] ;; configuration
                  [rocks.clj/lenses "0.1.0-SNAPSHOT"] ;; lenses
                  [rocks.clj/transit "0.1.0-SNAPSHOT"] ;; transit support
                  [rocks.clj/reagent-handler "0.1.0-SNAPSHOT"] ;; reagent server-side
