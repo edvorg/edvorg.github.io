@@ -1,6 +1,5 @@
 (ns edvorg.middleware
-  (:require [prone.middleware :refer [wrap-exceptions]]
-            [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
+  (:require [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.permacookie :refer [wrap-permacookie]]
             [rocks.clj.configuron.core :refer [env]]))
@@ -24,7 +23,6 @@
   (-> handler
       wrap-user-token
       (wrap-defaults site-defaults)
-      wrap-exceptions
       wrap-reload))
 
 (defn prod-middleware

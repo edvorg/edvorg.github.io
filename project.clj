@@ -5,63 +5,46 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :repositories [["jitpack" "https://jitpack.io"]
-                 ["central" "https://repo1.maven.org/maven2"]
-                 ["clojure" "https://build.clojure.org/releases"]
                  ["clojars" "https://clojars.org/repo"]
-                 ["java.net" "https://download.java.net/maven/2"]
-                 ["jboss.release" "https://repository.jboss.org/nexus/content/groups/public"]
-                 ["terracotta-releases" "https://www.terracotta.org/download/reflector/releases"]
-                 ["terracotta-snapshots" "https://www.terracotta.org/download/reflector/snapshots"]
-                 ["apache.snapshots" "https://repository.apache.org/snapshots"]]
+                 ;; ["central" "https://repo1.maven.org/maven2"]
+                 ;; ["clojure" "https://build.clojure.org/releases"]
+                 ;; ["java.net" "https://download.java.net/maven/2"]
+                 ;; ["jboss.release" "https://repository.jboss.org/nexus/content/groups/public"]
+                 ;; ["terracotta-releases" "https://www.terracotta.org/download/reflector/releases"]
+                 ;; ["terracotta-snapshots" "https://www.terracotta.org/download/reflector/snapshots"]
+                 ;; ["apache.snapshots" "https://repository.apache.org/snapshots"]
+                 ]
 
-  :dependencies [[org.clojure/clojure "1.8.0"] ;; server side language
-                 [org.clojure/clojurescript "1.9.908" :scope "provided"] ; client side language
-                 [clojure-future-spec "1.9.0-alpha14"] ;; spec
+  :dependencies [[org.clojure/clojure "1.9.0"] ;; server side language
+                 [org.clojure/clojurescript "1.10.64" :scope "provided"] ; client side language
                  [rocks.clj/configuron "0.1.1-SNAPSHOT"] ;; configuration
                  [rocks.clj/lenses "0.1.0-SNAPSHOT"] ;; lenses
                  [rocks.clj/transit "0.1.0-SNAPSHOT"] ;; transit support
                  [rocks.clj/reagent-handler "0.1.0-SNAPSHOT"] ;; reagent server-side
                  [com.taoensso/timbre "4.10.0"] ;; logging
-                 [org.clojure/core.async "0.3.443"] ;; concurrency/message processing
-                 [mount "0.1.11"] ;; state handling
-                 [com.taoensso/carmine "2.16.0"] ;; redis client
-                 [reagent "0.7.0"
-                  :exclusions [com.google.guava/guava]] ;; client side rendering
-                 [reagent-utils "0.2.1"] ;; client side utilities
-                 [ring/ring-devel "1.6.2"] ;; http server extensions
-                 [ring/ring-core "1.6.2"] ;; http server extensions
-                 [ring/ring-defaults "0.3.1"] ;; http server extensions
-                 [ring/ring-mock "0.3.1"] ;; http server extensions
-                 [prone "1.1.4"] ;; http server extensions
-                 [org.immutant/immutant "2.1.9"];; http server
-                 [compojure "1.6.0"] ;; server side routing
-                 [hiccup "1.0.5"] ;; server side rendering
-                 [jarohen/chord "0.8.1"
-                  :exclusions [http-kit]] ;; web sockets support
-                 [secretary "1.2.3"] ;; client side routing
-                 [clj-http "3.7.0"] ;; server side http client
-                 [cljs-http "0.1.43"] ;; client side http client
-                 [cheshire "5.8.0"] ;; json support
-                 [clojure-csv/clojure-csv "2.0.2"] ;; csv support
-                 [com.cemerick/url "0.1.1"] ;; url encoding support
-                 [venantius/accountant "0.2.0"
-                  :exclusions [org.clojure/tools.reader]] ;; client side routing configuration
-                 [less-awful-ssl "1.0.1"] ;; ssl support
-                 [org.bouncycastle/bcpkix-jdk15on "1.58"] ;; ssl support
-                 [pandect "0.6.1"] ;; ssl support
-                 [figwheel-sidecar "0.5.14"
-                  :exclusions [com.google.guava/guava]] ;; figwheel
+                 [org.clojure/core.async "0.4.474"] ;; concurrency/message processing
+                 [mount "0.1.12"] ;; state handling
+                 [reagent "0.7.0" :exclusions [com.google.guava/guava]] ;; client side rendering
+                 [ring/ring "1.6.3"] ;; http server
+                 [ring/ring-defaults "0.3.1"] ;; http server defaults
                  [org.clojars.cvillecsteele/ring-permacookie-middleware "1.4.0"] ;; identify visitors
-                 [clojurewerkz/elastisch "3.0.0-beta2"
-                  :exclusions [org.elasticsearch/elasticsearch]] ;; elasticsearch client
-                 [org.elasticsearch/elasticsearch "2.4.6"
-                  :exclusions [com.google.guava/guava]] ;; elasticsearch native client
+                 [ring/ring-mock "0.3.2"] ;; http server mocking
+                 [org.immutant/immutant "2.1.10"];; http server
+                 [compojure "1.6.0"] ;; server side routing
+                 [secretary "1.2.3"] ;; client side routing
+                 [venantius/accountant "0.2.4" :exclusions [org.clojure/tools.reader]] ;; client side routing config
+                 [cheshire "5.8.0"] ;; json support
+                 [hiccup "1.0.5"] ;; server side rendering
+                 [jarohen/chord "0.8.1" :exclusions [http-kit]] ;; web sockets support
+                 [clj-http "3.7.0"] ;; server side http client
+                 [cljs-http "0.1.44"] ;; client side http client
+                 [figwheel-sidecar "0.5.15" :exclusions [com.google.guava/guava]] ;; figwheel
                  ]
 
   :plugins [[lein-environ "1.1.0"]
             [lein-cljsbuild "1.1.7"]
-            [lein-asset-minifier "0.4.3" :exclusions [org.clojure/clojure]]
-            [lein-figwheel "0.5.14"]
+            [lein-asset-minifier "0.4.4" :exclusions [org.clojure/clojure]]
+            [lein-figwheel "0.5.15"]
             [rocks.clj/lein-give-me-my-css "0.1.0-SNAPSHOT"]]
 
   :ring {:handler edvorg.handler/dev-routes

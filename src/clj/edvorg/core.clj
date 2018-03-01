@@ -1,7 +1,6 @@
 (ns edvorg.core
   (:gen-class)
-  (:require [clojure-csv.core :as csv]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
             [figwheel-sidecar.repl-api :as ra]
             [edvorg.figwheel :refer [figwheel]]
             [edvorg.server :refer [server]]
