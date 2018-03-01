@@ -13,7 +13,32 @@
             [reagent.core :as reagent]
             [ring.util.response :as response]
             [taoensso.timbre :as timbre]
-            [edvorg.defaults  :as defaults]))
+            [edvorg.defaults  :as defaults]
+            [hiccup.page :refer [include-js include-css html5]]
+            [rocks.clj.configuron.core :refer [env get-client-config]]
+            [rocks.clj.transit.core :as transit]
+            [rocks.clj.reagent-handler.core :refer [render]]))
+
+(defn head
+  "Default head that is injected to any page that is rendered by server."
+  []
+  [:head
+   [:meta {:charset "utf-8"}]
+   (include-css (case (:mode env)
+                  :dev "/css/site.css"
+                  :uberjar "/css/site.min.css"))])
+
+(defn wrap-page
+  "Renders page component by wrapping it into template hiccup structure."
+  [[view state :as page]]
+  (html5
+    (head)
+    [:body {:class "body-container"}
+     [:div#config {:transit (get-client-config)}]
+     [:div#state {:transit (transit/to-transit @state)}]
+     [:div#app
+      (render page)]
+     (include-js "/js/app.js")]))
 
 (defn web-socket-handler [{:keys [cookies server-port visitor-id] :as req}]
   (let [on-close-fn (fn [channel {:keys [code reason]}])
@@ -43,13 +68,13 @@
 (defroutes routes
   (GET "/" {:keys [cookies visitor-id]}
        (-> [edvorg.view.index/view (atom defaults/state)]
-           (reagent/wrap-page)
+           wrap-page
            (response/response)
            (response/content-type "text/html")))
 
   (GET "/editor" {:keys [cookies visitor-id]}
        (-> [edvorg.view.editor/view (atom defaults/state)]
-           (reagent/wrap-page)
+           wrap-page
            (response/response)
            (response/content-type "text/html")))
 

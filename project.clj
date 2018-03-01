@@ -20,6 +20,7 @@
                  [rocks.clj/configuron "0.1.0-SNAPSHOT"] ;; configuration
                  [rocks.clj/lenses "0.1.0-SNAPSHOT"] ;; lenses
                  [rocks.clj/transit "0.1.0-SNAPSHOT"] ;; transit support
+                 [rocks.clj/reagent-handler "0.1.0-SNAPSHOT"] ;; reagent server-side
                  [com.taoensso/timbre "4.10.0"] ;; logging
                  [org.clojure/core.async "0.3.443"] ;; concurrency/message processing
                  [mount "0.1.11"] ;; state handling
