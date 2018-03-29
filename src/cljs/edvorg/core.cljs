@@ -41,22 +41,18 @@
       (.getAttribute "transit")
       (transit/from-transit)))
 
-(defonce init? (atom false))
-
-(defn init! []
-  (go
-    (let [env (<! (get-env))]
-      ;; decode application state from html
-      (->> (get-encoded-data "state")
-           (reset! state/state))
-      (case (:mode env)
-        :uberjar (set! *print-fn* (fn [& _]))
-        :dev (enable-console-print!))
-      (accountant/configure-navigation! {:nav-handler secretary/dispatch!
-                                         :path-exists? secretary/locate-route})
-      (accountant/dispatch-current!)
-      (mount-root))))
-
-(when-not @init?
-  (reset! init? true)
-  (init!))
+(defonce initalized?
+  (do
+    (go
+      (let [env (<! (get-env))]
+        ;; decode application state from html
+        (->> (get-encoded-data "state")
+             (reset! state/state))
+        (case (:mode env)
+          :uberjar (set! *print-fn* (fn [& _]))
+          :dev (enable-console-print!))
+        (accountant/configure-navigation! {:nav-handler secretary/dispatch!
+                                           :path-exists? secretary/locate-route})
+        (accountant/dispatch-current!)
+        (mount-root)))
+    true))

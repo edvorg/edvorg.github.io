@@ -15,31 +15,30 @@
                  ;; ["apache.snapshots" "https://repository.apache.org/snapshots"]
                  ]
 
-  :dependencies [[org.clojure/clojure "1.9.0"] ;; server side language
-                 [org.clojure/clojurescript "1.10.64" :scope "provided"] ; client side language
-                 [rocks.clj/configuron "0.1.1-SNAPSHOT"] ;; configuration
-                 [rocks.clj/lenses "0.1.0-SNAPSHOT"] ;; lenses
-                 [rocks.clj/transit "0.1.0-SNAPSHOT"] ;; transit support
-                 [rocks.clj/reagent-handler "0.1.0-SNAPSHOT"] ;; reagent server-side
-                 [com.taoensso/timbre "4.10.0"] ;; logging
-                 [org.clojure/core.async "0.4.474"] ;; concurrency/message processing
-                 [mount "0.1.12"] ;; state handling
-                 [reagent "0.7.0" :exclusions [com.google.guava/guava]] ;; client side rendering
-                 [ring/ring "1.6.3"] ;; http server
-                 [ring/ring-defaults "0.3.1"] ;; http server defaults
-                 [org.clojars.cvillecsteele/ring-permacookie-middleware "1.4.0"] ;; identify visitors
-                 [ring/ring-mock "0.3.2"] ;; http server mocking
-                 [org.immutant/immutant "2.1.10"];; http server
-                 [compojure "1.6.0"] ;; server side routing
-                 [secretary "1.2.3"] ;; client side routing
-                 [venantius/accountant "0.2.4" :exclusions [org.clojure/tools.reader]] ;; client side routing config
-                 [cheshire "5.8.0"] ;; json support
-                 [hiccup "1.0.5"] ;; server side rendering
-                 [jarohen/chord "0.8.1" :exclusions [http-kit]] ;; web sockets support
-                 [clj-http "3.7.0"] ;; server side http client
-                 [cljs-http "0.1.44"] ;; client side http client
-                 [figwheel-sidecar "0.5.15" :exclusions [com.google.guava/guava]] ;; figwheel
-                 ]
+  :dependencies [[org.clojure/clojure "1.9.0"]
+                 [org.clojure/clojurescript "1.10.64" :scope "provided"]
+                 [rocks.clj/configuron "0.1.1-SNAPSHOT"]
+                 [rocks.clj/lenses "0.1.0-SNAPSHOT"]
+                 [rocks.clj/transit "0.1.0-SNAPSHOT"]
+                 [rocks.clj/reagent-handler "0.1.0-SNAPSHOT"]
+                 [com.taoensso/timbre "4.10.0"]
+                 [org.clojure/core.async "0.4.474"]
+                 [mount "0.1.12"]
+                 [reagent "0.7.0" :exclusions [com.google.guava/guava]]
+                 [ring/ring "1.6.3"]
+                 [ring/ring-defaults "0.3.1"]
+                 [org.clojars.cvillecsteele/ring-permacookie-middleware "1.4.0"]
+                 [ring/ring-mock "0.3.2"]
+                 [org.immutant/immutant "2.1.10"]
+                 [compojure "1.6.0"]
+                 [secretary "1.2.3"]
+                 [venantius/accountant "0.2.4" :exclusions [org.clojure/tools.reader]]
+                 [cheshire "5.8.0"]
+                 [hiccup "1.0.5"]
+                 [jarohen/chord "0.8.1" :exclusions [http-kit]]
+                 [clj-http "3.7.0"]
+                 [cljs-http "0.1.44"]
+                 [figwheel-sidecar "0.5.15" :exclusions [com.google.guava/guava]]]
 
   :plugins [[lein-environ "1.1.0"]
             [lein-cljsbuild "1.1.7"]
